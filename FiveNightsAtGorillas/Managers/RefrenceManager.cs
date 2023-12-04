@@ -12,7 +12,7 @@ namespace FiveNightsAtGorillas.Managers.Refrences
 
         public GameObject ChainLoader { get; private set; }
         public GameObject FNAGMAP { get; set; }
-        public GameObject Jumpscares { get; set; }
+        public GameObject _Jumpscares { get; set; }
         public GameObject Menu { get; set; }
 
         public Material GameSkyColor { get; private set; }
@@ -110,7 +110,8 @@ namespace FiveNightsAtGorillas.Managers.Refrences
         public GameObject mingusParent { get; private set; }
         public GameObject bobParent { get; private set; }
 
-        public GameObject Jumpscare { get; private set; }
+        public GameObject JumpscareParent;
+        public Dictionary<string, GameObject> Jumpscares { get; private set; }
         public Animator JumpscareAnimation { get; private set; }
         public GameObject SixAM { get; private set; }
 
@@ -209,11 +210,15 @@ namespace FiveNightsAtGorillas.Managers.Refrences
             bob.Add(GameObject.Find("bob(CAM6)"));
             bob.Add(GameObject.Find("bob(CAM4)"));
             bob.Add(GameObject.Find("bob(CAM3)"));
-            Jumpscare = GameObject.Find("gorillaJS-PARENT");
-            JumpscareAnimation = GameObject.Find($"{Jumpscares.name}/gorillaJS-PARENT/gorillaJS").GetComponent<Animator>();
-            SixAM = GameObject.Find($"{Jumpscares.name}/6AM");
+
+                JumpscareParent = GameObject.Find("gorillaJS-PARENT");
+                //add all the jumpscare gameobjets like this with the "ai name" as the first bit
+                Jumpscares.Add("gorilla", JumpscareParent.transform.GetChild(0).gameObject);
+
+                JumpscareAnimation = GameObject.Find($"{_Jumpscares.name}/gorillaJS-PARENT/gorillaJS").GetComponent<Animator>();
+            SixAM = GameObject.Find($"{_Jumpscares.name}/6AM");
                 DingusRunning = GameObject.Find("Dingus Running").GetComponent<AudioSource>();
-                JumpscareSound = GameObject.Find("Jumpscare").GetComponent<AudioSource>();
+                JumpscareSound = GameObject.Find("Jumpscares").GetComponent<AudioSource>();
                 SixAMSound = GameObject.Find($"{FNAGMAP.name}/Audio/6AM").GetComponent<AudioSource>();
                 Poweroutage = GameObject.Find("PowerOutage").GetComponent<AudioSource>();
                 MenuIgnoreButton = GameObject.Find("Menu(Clone)/Warning/IgnoreWarning/Button");

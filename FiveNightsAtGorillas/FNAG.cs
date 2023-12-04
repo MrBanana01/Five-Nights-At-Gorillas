@@ -65,14 +65,14 @@ namespace FiveNightsAtGorillas
 
             var bundle = LoadAssetBundle("FiveNightsAtGorillas.Assets.fnag");
             var map = bundle.LoadAsset<GameObject>("FNAG MAP");
-            var jumpscare = bundle.LoadAsset<GameObject>("Jumpscares");
+            var jumpscare = bundle.LoadAsset<GameObject>("_Jumpscares");
             var menu = bundle.LoadAsset<GameObject>("Menu");
 
-            GameObject.Find("BepInEx_Manager").AddComponent<RefrenceManager>();
+            gameObject.AddComponent<RefrenceManager>();
 
             RefrenceManager.Data.Menu = Instantiate(menu);
             RefrenceManager.Data.FNAGMAP = Instantiate(map);
-            RefrenceManager.Data.Jumpscares = Instantiate(jumpscare);
+            RefrenceManager.Data._Jumpscares = Instantiate(jumpscare);
 
             RefrenceManager.Data.SetRefrences();
 
@@ -100,12 +100,16 @@ namespace FiveNightsAtGorillas
             RefrenceManager.Data.dingus[0].SetActive(true);
             RefrenceManager.Data.bob[0].SetActive(true);
             RefrenceManager.Data.SixAM.SetActive(false);
-            RefrenceManager.Data.Jumpscare.SetActive(false);
+            foreach (GameObject obj in RefrenceManager.Data.Jumpscares.Values)
+            {
+                obj.SetActive(false);
+            }
+            RefrenceManager.Data._Jumpscares.SetActive(false);
             RefrenceManager.Data.FNAGMAP.transform.position = new Vector3(-102.0151f, 23.7944f, -65.1198f);
-            RefrenceManager.Data.Jumpscares.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            RefrenceManager.Data.Jumpscare.transform.parent = GorillaTagger.Instance.mainCamera.transform;
+            RefrenceManager.Data._Jumpscares.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            RefrenceManager.Data.JumpscareParent.transform.parent = GorillaTagger.Instance.mainCamera.transform;
             RefrenceManager.Data.SixAM.transform.parent = GorillaTagger.Instance.mainCamera.transform;
-            RefrenceManager.Data.Jumpscare.transform.localPosition = new Vector3(0, -0.4f, 0.8f);
+            RefrenceManager.Data.JumpscareParent.transform.localPosition = new Vector3(0, -0.4f, 0.8f);
             RefrenceManager.Data.SixAM.transform.localPosition = new Vector3(0, 0, 0.1f);
             RefrenceManager.Data.SixAM.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
@@ -342,10 +346,10 @@ namespace FiveNightsAtGorillas
             Vector3 Back = new Vector3(-103.6259f, 24.8166f, -66.3371f); Teleport.TeleportPlayer(Back, 90f, true);
         }
 
-        public void Jumpscare()
+        public void Jumpscare(string ai)
         {
-            RefrenceManager.Data.Jumpscare.SetActive(true);
-            RefrenceManager.Data.JumpscareAnimation.Play("Jumpscare");
+            RefrenceManager.Data.Jumpscares[ai].SetActive(true);
+            RefrenceManager.Data.JumpscareAnimation.Play("Jumpscares");
             RefrenceManager.Data.JumpscareSound.Play();
             StartCoroutine(JumpscareDelay());
             StopGame();
@@ -408,7 +412,7 @@ namespace FiveNightsAtGorillas
         IEnumerator PoweroutageDelay()
         {
             yield return new WaitForSeconds(67.8f);
-            Jumpscare();
+            Jumpscare("gorilla");
         }
 
         IEnumerator DingusRunDelay()
@@ -416,7 +420,7 @@ namespace FiveNightsAtGorillas
             yield return new WaitForSeconds(2);
             if (DoorManager.Data.LeftDoorOpen)
             {
-                Jumpscare();
+                Jumpscare("bingus");
             }
             else
             {
@@ -433,7 +437,10 @@ namespace FiveNightsAtGorillas
             TeleportPlayerBack();
             TimePowerManager.Data.StopEverything();
             SkyColorWhite();
-            RefrenceManager.Data.Jumpscare.SetActive(false);
+            foreach (GameObject obj in RefrenceManager.Data.Jumpscares.Values)
+            {
+                obj.SetActive(false);
+            }
             RefrenceManager.Data.JumpscareAnimation.StopPlayback();
             RefrenceManager.Data.JumpscareSound.Stop();
             SkyColorWhite();

@@ -26,7 +26,7 @@ namespace FiveNightsAtGorillas.Other.NightStart
 
                 if(RefrenceManager.Data.GD.text == "1" && RefrenceManager.Data.BD.text == "9" && RefrenceManager.Data.DD.text == "8" && RefrenceManager.Data.MD.text == "7")
                 {
-                    FNAG.Data.Jumpscare();
+                    FNAG.Data.Jumpscare("gorilla");
                     return;
                 }
                 if (!PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount <= 1)

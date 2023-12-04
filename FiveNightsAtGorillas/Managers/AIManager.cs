@@ -21,6 +21,8 @@ namespace FiveNightsAtGorillas.Managers.AI
         public int Difficulty { get; set; }
         public bool AllowedToMove { get; private set; } = false;
 
+        public string name;
+
         void Awake()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -91,7 +93,7 @@ namespace FiveNightsAtGorillas.Managers.AI
             {
                 case "Cam3":
                     if (DoorManager.Data.RightDoorOpen)
-                        FNAG.Data.Jumpscare();
+                        FNAG.Data.Jumpscare(AIName);
                     else
                         MoveGorilla("Cam10");
                     break;
@@ -124,7 +126,7 @@ namespace FiveNightsAtGorillas.Managers.AI
             {
                 case "Cam2":
                     if (DoorManager.Data.LeftDoorOpen)
-                        FNAG.Data.Jumpscare();
+                        FNAG.Data.Jumpscare(AIName);
                     else
                         MoveMingus("Cam10");
                     break;
@@ -160,7 +162,7 @@ namespace FiveNightsAtGorillas.Managers.AI
             {
                 case "Cam3":
                     if (DoorManager.Data.RightDoorOpen)
-                        FNAG.Data.Jumpscare();
+                        FNAG.Data.Jumpscare(AIName);
                     else
                         MoveBob("Cam10");
                     break;
